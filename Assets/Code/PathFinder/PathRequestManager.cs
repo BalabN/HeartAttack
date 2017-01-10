@@ -1,6 +1,6 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace HA.PathFinder {
     public class PathRequestManager : MonoBehaviour {

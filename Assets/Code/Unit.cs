@@ -5,7 +5,7 @@ using HA.PathFinder;
 public class Unit : MonoBehaviour {
 
     public Transform target;
-    float speed = 20;
+    public float speed = 30;
     Vector3[] path;
     int targetIndex;
 

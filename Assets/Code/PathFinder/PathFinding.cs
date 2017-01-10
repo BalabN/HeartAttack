@@ -52,7 +52,7 @@ namespace HA.PathFinder {
                             continue;
                         }
 
-                        int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
+                        int newCostToNeighbour = node.gCost + GetDistance(node, neighbour) + neighbour.movementPenalty;
                         if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour)) {
                             neighbour.gCost = newCostToNeighbour;
                             neighbour.hCost = GetDistance(neighbour, targetNode);
@@ -72,7 +72,6 @@ namespace HA.PathFinder {
                 waypoints = RetracePath(startNode, targetNode);
             }
             reqestManager.FinishedProcessingPath(waypoints, isSuccess);
-
         }
 
         Vector3[] RetracePath(Node startNode, Node endNode) {
