@@ -32,14 +32,28 @@ public class WaveSpawner : MonoBehaviour {
         Debug.Log("Spawning wave");
         waveIndex++;
 
-        for (int i = 0; i < waveIndex; i++) {
-            SpawnEnemy();
-            yield return new WaitForSeconds(0.5f);
+        Transform spawnPosition = spawnPoint1;
+        if (waveIndex == 2) {
+            spawnPosition = spawnPoint2;
         }
+
+        StartCoroutine(SpawnEnemies(spawnPoint1));
+        StartCoroutine(SpawnEnemies(spawnPoint2));
+        StartCoroutine(SpawnEnemies(spawnPoint3));
+        StartCoroutine(SpawnEnemies(spawnPoint4));
+        yield return null;
     }
 
-    void SpawnEnemy() {
-        Transform enemyTransform = (Transform) Instantiate(enemyPrefab, spawnPoint1.position, spawnPoint1.rotation);
+    IEnumerator SpawnEnemies(Transform position) {
+        for (int i = 0; i < waveIndex; i++) {
+            SpawnEnemy(position);
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield break;
+    }
+
+    void SpawnEnemy(Transform position) {
+        Transform enemyTransform = (Transform) Instantiate(enemyPrefab, position.position, position.rotation);
         GameObject enemyGO = enemyTransform.gameObject;
         Unit enemy = enemyGO.GetComponent<Unit>();
         enemy.setTarget(endPoint);

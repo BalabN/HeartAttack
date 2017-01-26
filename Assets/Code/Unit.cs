@@ -16,9 +16,6 @@ public class Unit : MonoBehaviour {
 
     public void setTarget(Transform target) {
         this.target = target;
-        Debug.Log("transform = " + transform.position);
-        Debug.Log("target = " + this.target.position);
-        //Debug.Log("transform = " + transform.position);
         PathRequestManager.RequestPath(transform.position, this.target.position, OnPathFound);
     }
 
@@ -37,11 +34,11 @@ public class Unit : MonoBehaviour {
             if (transform.position == currentWaypoint) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
+                    Destroy(gameObject);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
             }
-
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
             yield return null;
         }
