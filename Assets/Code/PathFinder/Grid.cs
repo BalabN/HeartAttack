@@ -26,7 +26,9 @@ namespace HA.PathFinder {
                 walkableMask.value |= region.terrainMask.value;
                 walkableRegionsDictionary.Add((int) Mathf.Log(region.terrainMask.value, 2), region.terrainPenalty);
             }
+        }
 
+        void Update() {
             CreateGrid();
         }
 
@@ -59,7 +61,7 @@ namespace HA.PathFinder {
                     grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenalty);
                 }
             }
-            BlurPenaltyMap(5);
+            BlurPenaltyMap(2);
         }
 
         void BlurPenaltyMap(int blurSize) {
