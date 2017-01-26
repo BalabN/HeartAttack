@@ -32,11 +32,6 @@ public class WaveSpawner : MonoBehaviour {
         Debug.Log("Spawning wave");
         waveIndex++;
 
-        Transform spawnPosition = spawnPoint1;
-        if (waveIndex == 2) {
-            spawnPosition = spawnPoint2;
-        }
-
         StartCoroutine(SpawnEnemies(spawnPoint1));
         StartCoroutine(SpawnEnemies(spawnPoint2));
         StartCoroutine(SpawnEnemies(spawnPoint3));
