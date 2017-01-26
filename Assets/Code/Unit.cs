@@ -4,21 +4,29 @@ using HA.PathFinder;
 
 public class Unit : MonoBehaviour {
 
-    public Transform target;
+    private Transform target;
     public float speed = 30;
     Vector3[] path;
     int targetIndex;
 
     // Use this for initialization
-    void Start() {
-        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+    //void Start() {
+    //    PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+    //}
+
+    public void setTarget(Transform target) {
+        this.target = target;
+        Debug.Log("transform = " + transform.position);
+        Debug.Log("target = " + this.target.position);
+        //Debug.Log("transform = " + transform.position);
+        PathRequestManager.RequestPath(transform.position, this.target.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
         if (pathSuccessful) {
             path = newPath;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
+            StopCoroutine(FollowPath());
+            StartCoroutine(FollowPath());
         }
     }
 
