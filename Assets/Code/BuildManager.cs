@@ -11,26 +11,29 @@ public class BuildManager : MonoBehaviour {
         Instance = this;
     }
 
-    public GameObject basicTurretPrefab;
-    public GameObject anotherTurretPrefab;
-    private TurretBlueprint turretToBuild;
+    public GameObject turretNanoGun;
+    public GameObject turretNanoTesla;
+    public GameObject turretNanoStick;
+    public GameObject turretNanoNuclear;
 
-    public bool CanBuild { get { return true; } }
-    public bool HasMoney { get { return true; } }
+    private Turret turretToBuild;
 
-    public void SelectTurretToBuild(TurretBlueprint turret) {
+    public bool CanBuild { get { return turretToBuild != null; } }
+    public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
+
+    public void SelectTurretToBuild(Turret turret) {
         turretToBuild = turret;
     }
 
     public void BuildTurretOn(Pedistal pedistal) {
-        //if (PlayerStats.Money < 10) {
-        //    // TODO not enough money!! show
-        //    return;
-        //}
+        if (PlayerStats.Money < turretToBuild.cost) {
+            // TODO not enough money!! show
+            return;
+        }
 
-        PlayerStats.Money -= 10;
+        PlayerStats.Money -= turretToBuild.cost;
 
-        GameObject turret = (GameObject) Instantiate(basicTurretPrefab, pedistal.GetBuildPosition(), Quaternion.identity);
+        GameObject turret = (GameObject) Instantiate(turretToBuild.prefab, pedistal.GetBuildPosition(), Quaternion.identity);
         pedistal.turret = turret;
     }
 }
