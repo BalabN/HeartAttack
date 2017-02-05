@@ -6,6 +6,8 @@ public class Unit : MonoBehaviour {
 
     private Transform target;
     public float speed = 30;
+    public float health = 100;
+    public int enemyReward = 10;
     Vector3[] path;
     int targetIndex;
 
@@ -34,7 +36,7 @@ public class Unit : MonoBehaviour {
             if (transform.position == currentWaypoint) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
-                    Destroy(gameObject);
+                    Die();
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -42,6 +44,12 @@ public class Unit : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    private void Die() {
+        PlayerStats.Money += enemyReward;
+        PlayerStats.Lives--;
+        Destroy(gameObject);
     }
 
     public void OnDrawGizmos() {
