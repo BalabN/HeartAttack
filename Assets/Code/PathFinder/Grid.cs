@@ -38,6 +38,16 @@ namespace HA.PathFinder {
             }
         }
 
+        public LayerMask WalkableMask {
+            get {
+                return walkableMask;
+            }
+
+            set {
+                walkableMask = value;
+            }
+        }
+
         void CreateGrid() {
             grid = new Node[gridSizeX, gridSizeY];
             Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;

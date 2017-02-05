@@ -5,9 +5,6 @@ public class Main : MonoBehaviour {
 
     private static Main instance;
 
-    [HideInInspector]
-    public GameManager GameManager;
-
     private Main() { }
 
     public static Main Instance {
@@ -32,7 +29,7 @@ public class Main : MonoBehaviour {
     }
 
     private void InitManagers() {
-        GameManager = gameObject.AddComponent<GameManager>() as GameManager;
+        //GameManager = gameObject.AddComponent<GameManager>() as GameManager;
     }
 
     // Update is called once per frame

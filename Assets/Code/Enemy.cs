@@ -2,21 +2,24 @@
 using System.Collections;
 using HA.PathFinder;
 
-public class Unit : MonoBehaviour {
+public class Enemy : MonoBehaviour {
 
     private Transform target;
-    public float speed = 30;
+    public float startSpeed = 10f;
+
+    [HideInInspector]
+    public float speed;
+
     public float health = 100;
     public int enemyReward = 10;
     Vector3[] path;
     int targetIndex;
 
-    // Use this for initialization
-    //void Start() {
-    //    PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-    //}
+    void Start() {
+        speed = startSpeed;
+    }
 
-    public void setTarget(Transform target) {
+    public void SetTarget(Transform target) {
         this.target = target;
         PathRequestManager.RequestPath(transform.position, this.target.position, OnPathFound);
     }
@@ -36,7 +39,7 @@ public class Unit : MonoBehaviour {
             if (transform.position == currentWaypoint) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
-                    Die();
+                    EndPath();
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -46,9 +49,29 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void Die() {
+    public void TakeDamage(float damageAmount) {
+        health -= damageAmount;
+
+        if (health <= 0) {
+            Die();
+        }
+    }
+
+    public void Slow(float pct) {
+        speed = startSpeed * (1f - pct);
+    }
+
+    void Die() {
         PlayerStats.Money += enemyReward;
-        PlayerStats.Lives--;
+
+        //GameObject effect = (GameObject) Instantiate(deathEffect, transform.position, Quaternion.identity);
+        //Destroy(effect, 5f);
+
+        Destroy(gameObject);
+    }
+
+    void EndPath() {
+        PlayerStats.Lives -= 1;
         Destroy(gameObject);
     }
 
@@ -65,10 +88,5 @@ public class Unit : MonoBehaviour {
                 }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update() {
-
     }
 }

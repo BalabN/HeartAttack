@@ -3,7 +3,6 @@
 public class TurretManager : MonoBehaviour {
 
     private Transform target;
-    private Unit targetEnemy;
 
     [Header("Attributes")]
     public float range = 15f;
@@ -49,7 +48,6 @@ public class TurretManager : MonoBehaviour {
 
             if (nearestEnemy != null && shortestDistance <= range) {
                 target = nearestEnemy.transform;
-                targetEnemy = target.GetComponent<Unit>();
             }
         }
     }

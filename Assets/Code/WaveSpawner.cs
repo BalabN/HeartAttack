@@ -31,10 +31,14 @@ public class WaveSpawner : MonoBehaviour {
     IEnumerator SpawnWave() {
         Debug.Log("Spawning wave");
         waveIndex++;
+        PlayerStats.Rounds++;
 
         StartCoroutine(SpawnEnemies(spawnPoint1));
+        yield return new WaitForSeconds(0.5f);
         StartCoroutine(SpawnEnemies(spawnPoint2));
+        yield return new WaitForSeconds(0.5f);
         StartCoroutine(SpawnEnemies(spawnPoint3));
+        yield return new WaitForSeconds(0.5f);
         StartCoroutine(SpawnEnemies(spawnPoint4));
         yield return null;
     }
@@ -50,8 +54,8 @@ public class WaveSpawner : MonoBehaviour {
     void SpawnEnemy(Transform position) {
         Transform enemyTransform = (Transform) Instantiate(enemyPrefab, position.position, position.rotation);
         GameObject enemyGO = enemyTransform.gameObject;
-        Unit enemy = enemyGO.GetComponent<Unit>();
-        enemy.setTarget(endPoint);
+        Enemy enemy = enemyGO.GetComponent<Enemy>();
+        enemy.SetTarget(endPoint);
     }
 
 
