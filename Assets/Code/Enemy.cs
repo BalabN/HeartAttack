@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour {
 
     private Transform target;
     public float startSpeed = 10f;
+    public float rotationSpeed = 10f;
+
 
     [HideInInspector]
     public float speed;
@@ -36,7 +38,8 @@ public class Enemy : MonoBehaviour {
         Vector3 currentWaypoint = path[0];
 
         while (true) {
-            if (transform.position == currentWaypoint) {
+            float distance = Mathf.Abs(Vector3.Distance(transform.position, currentWaypoint));
+            if (distance < 15f) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
                     EndPath();
@@ -44,11 +47,20 @@ public class Enemy : MonoBehaviour {
                 }
                 currentWaypoint = path[targetIndex];
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            LockOnTarget(currentWaypoint);
+            //transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            transform.position += transform.forward * Time.deltaTime * speed;
             // TODO Better add debuff list to go through before setting enemy fields
             speed = startSpeed;
             yield return null;
         }
+    }
+
+    void LockOnTarget(Vector3 currentWaypoint) {
+        Vector3 directionToEnemy = (currentWaypoint - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
+        Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
+        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 
     public void TakeDamage(float damageAmount) {

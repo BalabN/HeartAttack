@@ -43,7 +43,7 @@ namespace HA.PathFinder {
                         isSuccess = true;
                         RetracePath(startNode, targetNode);
                         sw.Stop();
-                        print("Path found " + sw.ElapsedMilliseconds + "ms");
+                        //print("Path found " + sw.ElapsedMilliseconds + "ms");
                         break;
                     }
 
