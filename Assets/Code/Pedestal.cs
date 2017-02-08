@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Pedistal : MonoBehaviour {
+public class Pedestal : MonoBehaviour {
 
     public Color hoverColor;
     public Color noMoneyColor;
@@ -40,7 +40,7 @@ public class Pedistal : MonoBehaviour {
         BuildManager.Instance.BuildTurretOn(this);
     }
 
-    void OnMouseEnter() {
+    void OnMouseOver() {
         if (EventSystem.current.IsPointerOverGameObject()) {
             return;
         }

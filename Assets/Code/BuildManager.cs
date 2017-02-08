@@ -25,7 +25,7 @@ public class BuildManager : MonoBehaviour {
         turretToBuild = turret;
     }
 
-    public void BuildTurretOn(Pedistal pedistal) {
+    public void BuildTurretOn(Pedestal pedistal) {
         if (PlayerStats.Money < turretToBuild.cost) {
             // TODO not enough money!! show
             return;
