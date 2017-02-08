@@ -42,8 +42,13 @@ public class Enemy : MonoBehaviour {
             if (distance < 15f) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
-                    EndPath();
-                    yield break;
+                    targetIndex = path.Length - 1;
+                    print("Distance = " + distance);
+                    if (distance <= 1.5f) {
+                        print("Tu sam");
+                        EndPath();
+                        yield break;
+                    }
                 }
                 currentWaypoint = path[targetIndex];
             }
@@ -57,10 +62,11 @@ public class Enemy : MonoBehaviour {
     }
 
     void LockOnTarget(Vector3 currentWaypoint) {
+        currentWaypoint = new Vector3(currentWaypoint.x, currentWaypoint.y, currentWaypoint.z);
         Vector3 directionToEnemy = (currentWaypoint - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
         Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
-        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        transform.rotation = Quaternion.Euler(rotation);
     }
 
     public void TakeDamage(float damageAmount) {

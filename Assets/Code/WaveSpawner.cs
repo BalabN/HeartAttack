@@ -52,7 +52,8 @@ public class WaveSpawner : MonoBehaviour {
     }
 
     void SpawnEnemy(Transform position) {
-        Transform enemyTransform = (Transform) Instantiate(enemyPrefab, position.position, position.rotation);
+        Vector3 direction = (endPoint.position - position.position).normalized;
+        Transform enemyTransform = (Transform) Instantiate(enemyPrefab, position.position, Quaternion.LookRotation(direction));
         GameObject enemyGO = enemyTransform.gameObject;
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         enemy.SetTarget(endPoint);
