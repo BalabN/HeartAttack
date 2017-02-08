@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour {
                 currentWaypoint = path[targetIndex];
             }
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            // TODO Better add debuff list to go through before setting enemy fields
+            speed = startSpeed;
             yield return null;
         }
     }

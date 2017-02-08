@@ -3,6 +3,7 @@
 public class Bullet : MonoBehaviour {
 
     private Transform target;
+    private Vector3 lastKnownTargetPos = Vector3.zero;
 
     public float bulletSpeed = 70f;
     public float effectRadius = 0f;
@@ -12,16 +13,20 @@ public class Bullet : MonoBehaviour {
 
     public void Seek(Transform target) {
         this.target = target;
+        lastKnownTargetPos = target.position;
     }
 
     // Update is called once per frame
     void Update() {
-        if (target == null) {
-            Destroy(gameObject);
+        Vector3 targetDirection;
+        if (target == null && lastKnownTargetPos == Vector3.zero) {
             return;
         }
+        if (target != null) {
+            lastKnownTargetPos = target.position;
+        }
 
-        Vector3 targetDirection = target.position - transform.position;
+        targetDirection = lastKnownTargetPos - transform.position;
         float distanceThisFrame = bulletSpeed * Time.deltaTime;
 
         if (targetDirection.magnitude <= distanceThisFrame) {
@@ -30,7 +35,7 @@ public class Bullet : MonoBehaviour {
         }
 
         transform.Translate(targetDirection.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(target);
+        transform.LookAt(lastKnownTargetPos);
     }
 
     private void HitTarget() {
@@ -57,6 +62,9 @@ public class Bullet : MonoBehaviour {
     }
 
     void Damage(Transform enemy) {
+        if (enemy == null) {
+            return;
+        }
         Enemy e = enemy.GetComponent<Enemy>();
         if (e != null) {
             e.TakeDamage(damage);
@@ -64,6 +72,9 @@ public class Bullet : MonoBehaviour {
     }
 
     void DamageRange(Transform enemy) {
+        if (enemy == null) {
+            return;
+        }
         Enemy e = enemy.GetComponent<Enemy>();
         if (e != null) {
             e.TakeDamage(damageRadius);
@@ -71,6 +82,9 @@ public class Bullet : MonoBehaviour {
     }
 
     void Kill(Transform enemy) {
+        if (enemy == null) {
+            return;
+        }
         Enemy e = enemy.GetComponent<Enemy>();
         if (e != null) {
             e.TakeDamage(e.health);

@@ -61,7 +61,7 @@ public class TurretManager : MonoBehaviour {
                 impactEffect.Stop();
                 impactLight.enabled = false;
             }
-
+            fireCountdown -= Time.deltaTime;
             return;
         }
 
