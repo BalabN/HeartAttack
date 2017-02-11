@@ -56,6 +56,7 @@ public class WaveSpawner : MonoBehaviour {
         Transform enemyTransform = (Transform) Instantiate(enemyPrefab, position.position, Quaternion.LookRotation(direction));
         GameObject enemyGO = enemyTransform.gameObject;
         Enemy enemy = enemyGO.GetComponent<Enemy>();
+        enemy.health += (0.005f * enemy.health);
         enemy.SetTarget(endPoint);
     }
 

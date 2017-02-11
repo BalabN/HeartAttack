@@ -17,23 +17,38 @@ public class BuildManager : MonoBehaviour {
     public GameObject turretNanoNuclear;
 
     private Turret turretToBuild;
+    private Pedestal selectedPedestal;
 
-    public bool CanBuild { get { return turretToBuild != null; } }
+    public PedestalUI pedestalUI;
+
+    public bool CanBuild { get { return turretToBuild == null; } }
     public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
+
+    public void SelectPedestal(Pedestal pedestal) {
+        if (selectedPedestal == pedestal) {
+            DeselectPedestal();
+            return;
+        }
+        selectedPedestal = pedestal;
+        turretToBuild = null;
+
+        pedestalUI.OpenUI(pedestal);
+    }
+
+    public void DeselectPedestal() {
+        selectedPedestal = null;
+        pedestalUI.Hide();
+    }
 
     public void SelectTurretToBuild(Turret turret) {
         turretToBuild = turret;
     }
 
-    public void BuildTurretOn(Pedestal pedistal) {
-        if (PlayerStats.Money < turretToBuild.cost) {
-            // TODO not enough money!! show
-            return;
-        }
+    public Turret GetTurretToBuild() {
+        return turretToBuild;
+    }
 
-        PlayerStats.Money -= turretToBuild.cost;
-
-        GameObject turret = (GameObject) Instantiate(turretToBuild.prefab, pedistal.GetBuildPosition(), Quaternion.identity);
-        pedistal.turret = turret;
+    public Pedestal GetSelectedPedestal() {
+        return selectedPedestal;
     }
 }

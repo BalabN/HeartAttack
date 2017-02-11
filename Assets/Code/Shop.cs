@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour {
 
@@ -9,25 +9,41 @@ public class Shop : MonoBehaviour {
     public Turret nanoStickTurret;
     public Turret nanoNuclearTurret;
 
+    [Header("Shop")]
+    public Text gunCost;
+    public Text teslaCost;
+    public Text stickCost;
+    public Text nuclearCost;
+
     void Start() {
         buildManager = BuildManager.Instance;
+        gunCost.text = nanoGunTurret.cost + "";
+        teslaCost.text = nanoTeslaTurret.cost + "";
+        stickCost.text = nanoStickTurret.cost + "";
+        nuclearCost.text = nanoNuclearTurret.cost + "";
     }
 
-    public void SelectGunTurret() {
-        buildManager.SelectTurretToBuild(nanoGunTurret);
+    public void BuildGunTurret() {
+        BuildTurret(nanoGunTurret);
     }
 
-    public void SelectTeslaTurret() {
-        buildManager.SelectTurretToBuild(nanoTeslaTurret);
+    public void BuildTeslaTurret() {
+        BuildTurret(nanoTeslaTurret);
     }
 
-    public void SelectStickTurret() {
-        buildManager.SelectTurretToBuild(nanoStickTurret);
+    public void BuildStickTurret() {
+        BuildTurret(nanoStickTurret);
     }
 
 
-    public void SelectNuclearTurret() {
-        buildManager.SelectTurretToBuild(nanoNuclearTurret);
+    public void BuildNuclearTurret() {
+        BuildTurret(nanoNuclearTurret);
+    }
+
+    void BuildTurret(Turret turret) {
+        buildManager.SelectTurretToBuild(turret);
+        buildManager.GetSelectedPedestal().BuildTurret(turret);
+        buildManager.DeselectPedestal();
     }
 
     public void OnPointerEnter() {

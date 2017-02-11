@@ -7,8 +7,12 @@ public class Pedestal : MonoBehaviour {
     public Color noMoneyColor;
     private Vector3 turretOffset;
 
-    [Header("Optional")]
+    [HideInInspector]
     public GameObject turret;
+    [HideInInspector]
+    public Turret turretBlueprint;
+    [HideInInspector]
+    public bool isUpgraded = false;
 
     private Renderer rend;
     private Color startColor;
@@ -27,17 +31,50 @@ public class Pedestal : MonoBehaviour {
         if (EventSystem.current.IsPointerOverGameObject()) {
             return;
         }
-        if (!BuildManager.Instance.CanBuild) {
+
+        Debug.Log("Can't build here3");
+        BuildManager.Instance.SelectPedestal(this);
+
+
+    }
+
+    public void BuildTurret(Turret blueprint) {
+        if (PlayerStats.Money < blueprint.cost) {
+            // TODO not enough money!! show
             return;
         }
 
-        if (turret != null) {
-            // TODO Display on screen
-            Debug.Log("Can't build here");
+        PlayerStats.Money -= blueprint.cost;
+
+        GameObject _turret = (GameObject) Instantiate(blueprint.prefab, GetBuildPosition(), Quaternion.identity);
+        turret = _turret;
+        turretBlueprint = blueprint;
+    }
+
+    public void UpgradeTurret() {
+        if (PlayerStats.Money < turretBlueprint.upgradeCost) {
+            // TODO not enough money!! show
             return;
         }
 
-        BuildManager.Instance.BuildTurretOn(this);
+        PlayerStats.Money -= turretBlueprint.upgradeCost;
+
+        // Old turret
+        Destroy(turret);
+
+        // Upgraded build
+        GameObject _turret = (GameObject) Instantiate(turretBlueprint.upgradePrefab, GetBuildPosition(), Quaternion.identity);
+        turret = _turret;
+        isUpgraded = true;
+    }
+
+    public void SellTurret() {
+        PlayerStats.Money += turretBlueprint.sellAmount;
+
+        Destroy(turret);
+        turret = null;
+        isUpgraded = false;
+        turretBlueprint = null;
     }
 
     void OnMouseOver() {
@@ -49,11 +86,11 @@ public class Pedestal : MonoBehaviour {
             return;
         }
 
-        if (BuildManager.Instance.HasMoney) {
+        //if (BuildManager.Instance.HasMoney) {
             rend.material.color = hoverColor;
-        } else {
-            rend.material.color = noMoneyColor;
-        }
+        //} else {
+            //rend.material.color = noMoneyColor;
+        //}
     }
 
     void OnMouseExit() {
