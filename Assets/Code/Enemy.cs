@@ -21,6 +21,13 @@ public class Enemy : MonoBehaviour {
         speed = startSpeed;
     }
 
+    void Update() {
+        if (this == null) {
+            return;
+        }
+
+    }
+
     public void SetTarget(Transform target) {
         this.target = target;
         PathRequestManager.RequestPath(transform.position, this.target.position, OnPathFound);
